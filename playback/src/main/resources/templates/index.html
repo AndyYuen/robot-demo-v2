@@ -1,0 +1,100 @@
+<html>
+<head>
+	<title>Robot Movment Replay</title>
+	<script th:src="@{js/jquery-3.4.1.min.js}" type="application/javascript"></script>
+
+</head>
+<body>
+<div style="text-align:center" />
+
+<table align="center">
+	<tr><td>
+		<table align="center">
+		<tr><td colspan="3">
+		<h1 align="center">ROBOT DEMO USING MQTT, KAFKA, FUSE ONLINE</h1> 
+		</td></tr>
+		<tr><td>
+		<img style="height: 200px" th:src="@{images/roverLeft.jpg}" /> 
+		</td><td>
+		<h1><span th:text="${appName}"></span></h1>
+		</td><td>
+		<img style="height: 200px" th:src="@{images/roverRight.jpg}" />
+		</td></tr>
+		</table>
+	</td></tr>
+	<tr><td colspan="2">
+
+	  	<fieldset class="fieldset">
+	    	<legend>Retrieve Movement for Robot</legend>
+	    	<table align="center">
+	    	<tr><td colspan="2">
+	    	<label for="name">Name for Retrieval: </label>
+	    	<input type="text" id="name" name="name" />
+	    	<button style="height: 75px; width: 75px" onclick="retrieveMovements('name')">Retrieve Movement</button>
+	    	<button style="height: 75px; width: 75px" onclick="replayMovements('name')">Replay Movement</button>
+	    	</td><td align="center">
+	    	<img style="height: 200px" th:src="@{images/movement.jpeg}" />
+	    	</td></tr>
+	    	</table>
+	   	</fieldset>
+
+	</td></tr>
+</table>
+<div id="displayDiv" style="background-color:lightblue" align="center"></div>
+
+<script type="application/javascript">
+
+function retrieveMovements(name) {
+	console.log('retrieveMovements called');
+	$.ajax({
+	    type: "GET",
+	    url: "/movement/" + document.getElementById(name).value,
+	    contentType: "application/json; charset=utf-8",
+	    crossDomain: true,
+	    xhrFields: {
+	        withCredentials: false
+	    },
+	    headers: {
+	        'Access-Control-Allow-Origin': '*',
+	        'Accept': 'application/json',
+	    },
+	    success:  function (json) {
+	    	var table = '<table border="1" id="movements"><tr><th>Id</th><th>Time</th><th>Movement</th></tr>';
+	    	var rows = '';
+	    	$.each(json, function(index, data) {
+	    		var row = '<tr>';
+                row += '<td style="width: 15px;">' + data.id + '</td>';
+                row += '<td>' + data.time + '</td>';
+                row += '<td>' + data.cmd + '</td>';
+                row += '</tr>';
+                rows += row ;
+	    	});
+	    	table += rows + '</table>';
+            $("#displayDiv").html(table);
+	    }
+	});
+}
+
+function replayMovements(name) {
+	console.log('retrieveMovements called');
+	$.ajax({
+	    type: "GET",
+	    url: "/replicate/" + document.getElementById(name).value,
+	    contentType: "application/json; charset=utf-8",
+	    crossDomain: true,
+	    xhrFields: {
+	        withCredentials: false
+	    },
+	    headers: {
+	        'Access-Control-Allow-Origin': '*',
+	        'Accept': 'application/json',
+	    },
+	    success:  function (json) {
+	    	var msg = '<h1>Replaying movement...</h1>';
+            $("#displayDiv").html(msg);
+	    }
+	});
+}
+</script>
+</body>
+</html>
