@@ -5,7 +5,7 @@
 The Robot Demo using Generation One robots attracted lots of attention during the 2019 Sydney Gartner Application Architecture, Development & Integration Summit. The robots are shown below:
 ![ROBOT DEMO AT GARTNER ADDI SUMMIT 2019 IN SYDNEY](images/GartnerAADI.jpg "ROBOT DEMO AT GARTNER ADDI SUMMIT 2019 IN SYDNEY")
 
-Owing to the fact that the generation one robots use a bespoke WIFI hardware extension card that had to be  hand-built, it becomes an inconvenience for others to replicate the demo. In view of this, I started looking for new robots that don’t require bespoke builds. The specifications of the newly chosen robot made up of two components can be found in the following links:
+Owing to the fact that the generation one robots use a bespoke WIFI hardware extension card that had to be hand-built, it becomes an inconvenience for others to replicate the demo. In view of this, I started looking for new robots that don’t require bespoke builds. The specifications of the newly chosen robot made up of two components shown in the following links:
 
 [M5StickC ESP32-PICO Mini IoT Development Kit](https://m5stack.com/collections/m5-core/products/stick-c)
 [RoverC W/O M5StickC](https://m5stack.com/collections/m5-unit/products/rovercw-o-m5stickc)
@@ -13,7 +13,7 @@ Owing to the fact that the generation one robots use a bespoke WIFI hardware ext
 This is what the new robot looks like. 
 ![NEW ROBOT](images/roverRight.jpg "NEW ROBOT")
 
-As this is an off-the-shelf robot, everyone can easily replicate the demos once the code on Github. The good thing is that each robot costs under US$60.
+As this is an off-the-shelf robot, everyone can easily replicate the demos once the code is available here on Github. The good thing is that each robot costs under US$60.
 
 A youtube video describing the development of the robots from prototype to generation two can be found below:
 [ROBOTS  FOR GARTNER AADI SUMMIT - FROM PROTOTYPE TO GENERATION 2](https://youtu.be/NQU0mi6Qvm8)
@@ -23,6 +23,7 @@ Here is a high-level view of all the components involved in the demo:
 
 
 ## Application in each Directory
+Openshift Version 4.2.10 was used in testing.
 ### fuseonline (on Openshift)
 This directory contains 2 Fuse Online integrations:
 * MQTT-to-Kafka-export.zip - this integration is responsible for the top path in the architecture diagram ie, from MQTT to Kafka
@@ -38,11 +39,11 @@ This directory contains the images used in the README.me file.
 
 ### Prerequisites
 
-* deployed a MySQL database V5.7 in your Fuse Online Project
+* Deployed a MySQL database V5.7 in your Fuse Online Project
 * Initialised the MySQL database with the src/main/resources/mysql.sql script
 
-### Deploy playback
-Follow the following steps (assuming you've already created a project named playback on Openshit and updated the src/main/resources/application.properties file to reflect the mysql-specific parameter values):
+### Deployment
+Follow the following steps (assuming you've already created a project named playback on Openshift and updated the src/main/resources/application.properties file to reflect the mysql-specific parameter values):
 
 * oc policy add-role-to-user view -n playback -z default
 * oc create configmap playback --from-file=src/main/resources/application.properties -n playback
@@ -63,14 +64,14 @@ As the Openshift instance running in the Internet is not able to access a non-ro
 [What is ngrok?](https://ngrok.com/product)
 ## Deployment
 
-This is meant to be run in the same private non-routable network as you robots and not intended to run on Openshift.
+This is meant to be run in the same private non-routable network as you robots and not on Openshift.
 
 * modify the robotNames hashmap in CommandEnpoin.java to associate the correct IP address with each robot
 * mvn clean spring-boot:run
 * start ngrok tunnel to allow access to your robotService from the Internet
 
 ### rover (Arduino Project)
-This is an Arduino project. The rover application need to be flashed onto the robots using the Arduino IDE.
+This is an Arduino project. The rover application needs to be flashed onto the robots using the Arduino IDE.
 
 The robot.ino contains two define statements:
 <pre>
@@ -78,7 +79,7 @@ The robot.ino contains two define statements:
 //#define _FOLLOWER
 </pre>
 
-Comment out one or the other. _LEADER sends all movements received from webControl (discussed later) and forward them to a public MQTT server's "movement" topic. _FOLLOWER subscribes to the "movement" topic and execute the movement commands. It still receives commands from WenControl and execute them but does not send them to a remote MQTT server.
+Comment out one or the other. _LEADER sends all movements received from webControl (discussed later) and forward them to a public MQTT server's "movement" topic. _FOLLOWER subscribes to the "movement" topic and execute the movement commands. It still receives commands from WebControl and executes them but does not send them to a remote MQTT server.
 
 The robot screen displays the robot's IP address and the last movement command that has been executed. The screen content is shown below:
 ![ROBOT SCREEN](images/robotDisplay.jpg "ROBOT SCREEN")
