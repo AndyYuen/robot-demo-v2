@@ -8,6 +8,7 @@ The Robot Demo using Generation One robots attracted lots of attention during th
 Owing to the fact that the generation one robots use a bespoke WIFI hardware extension card that had to be hand-built, it becomes an inconvenience for others to replicate the demo. In view of this, I started looking for new robots that don’t require bespoke builds. The specifications of the newly chosen robot made up of two components shown in the following links:
 
 [M5StickC ESP32-PICO Mini IoT Development Kit](https://m5stack.com/collections/m5-core/products/stick-c)
+
 [RoverC W/O M5StickC](https://m5stack.com/collections/m5-unit/products/rovercw-o-m5stickc)
 
 This is what the new robot looks like. 
